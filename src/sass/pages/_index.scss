@@ -19,11 +19,17 @@
     cursor: pointer;
     padding: 10px 2em 10px 100%;
   }
-  .text-defil:hover > div {
-    animation-play-state: paused; /* met en pause le défilement */
-}
+  
 
 .bg-grey {
-  color: #e3deda;
+  background-color: #e3deda;
 }
 
+#productName {
+  color: $tc-title;
+}
+
+#productImage {
+  min-height: 218px;
+  width: auto;
+}
