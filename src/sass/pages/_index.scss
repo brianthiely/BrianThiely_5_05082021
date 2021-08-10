@@ -1,35 +1,40 @@
-*,::before, ::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: O;
+*,
+::before,
+::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: O;
+}
+
+.jumbotron {
+	background-image: url(/front-end/dist/images/banniere.jpg);
 }
 
 /* ---------------------------- */
 /* Défilement de droite à gauche */
 .text-defil {
-    font-size: 1.5em;
-    overflow: hidden; /* important */
-    width:100%; /* A ADAPTER */
-  }
-  .text-defil > div {
-    display: inline-block; /* important */
-    justify-content: center;
-    white-space: nowrap; /* important */
-    animation: defilement-text 9s infinite linear; /* défilement */
-    cursor: pointer;
-    padding: 10px 2em 10px 100%;
-  }
-  
+	font-size: 2em;
+	overflow: hidden; /* important */
+	width: 100%; /* A ADAPTER */
+}
+.text-defil > div {
+	display: inline-block; /* important */
+	justify-content: center;
+	white-space: nowrap; /* important */
+	animation: defilement-text 9s infinite linear; /* défilement */
+	cursor: pointer;
+	padding: 10px 2em 10px 100%;
+}
 
 .bg-grey {
-  background-color: #e3deda;
+	background-color: #e3deda;
 }
 
 #productName {
-  color: $tc-title;
+	color: $tc-title;
 }
 
 #productImage {
-  min-height: 218px;
-  width: auto;
+	min-height: 218px;
+	width: auto;
 }

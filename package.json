@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "build": "sass --watch src/sass/main.scss:dist/css/style.css --style compressed"
-
   },
   "repository": {
     "type": "git",
@@ -16,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/brianthiely/BrianThiely_5_05082021/issues"
   },
-  "homepage": "https://github.com/brianthiely/BrianThiely_5_05082021#readme"
+  "homepage": "https://github.com/brianthiely/BrianThiely_5_05082021#readme",
+  "devDependencies": {
+    "prettier": "^2.3.2"
+  }
 }
