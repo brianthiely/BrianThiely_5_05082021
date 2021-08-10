@@ -1,0 +1,21 @@
+{
+  "name": "front-end",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "sass": "sass --watch src/sass/main.scss:src/css/style.css",
+    "compress": "sass --watch src/sass/main.scss:dist/css/style.css --style compressed"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brianthiely/BrianThiely_5_05082021.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/brianthiely/BrianThiely_5_05082021/issues"
+  },
+  "homepage": "https://github.com/brianthiely/BrianThiely_5_05082021#readme"
+}

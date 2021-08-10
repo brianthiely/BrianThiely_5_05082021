@@ -1,41 +1,44 @@
+// Main function, auto called at load time
+;(async () => {
+  const products = await getProducts()
+  hydratePage(products)
+})()
 
-(async function() {
-    const teddies = await getAllTeddies()
-    
-    for (teddie of teddies) {
-        console.log('display teddie', teddie);
-      displayTeddie(teddie)
-    }
-  })()
-
-async function getAllTeddies() {
-   return await fetch(`${apiUrl}/api/teddies`)
-    .then(function(httpBodyResponse){
-        return httpBodyResponse.json()
-    })
-    .then(function(teddies) {
-        console.log(teddies);
-        return teddies
-    })
-    .catch(function(error) {
-        alert("Oups... Il semblerait que les nounours ce sont fait la malle.")
+async function getProducts() {
+  return fetch(`${apiUrl}/api/teddies`)
+    .then((httpBodyResponse) => httpBodyResponse.json())
+    .then((products) => products)
+    .catch((error) => {
+      alert(
+        "Oups... On dirait que les nounours ce sont fait la malle !"
+      )
     })
 }
 
-function displayTeddie(teddie) {
-  const templateElt = document.getElementById("teddie")
+function hydratePage(products) {
+  // Remove loading boxes
+  document.getElementById('productsList').innerHTML = ''
+
+  // Loop over all products and displays them
+  products.forEach((product) => {
+    displayProduct(product)
+  })
+}
+
+function displayProduct(product) {
+  // Get template
+  const templateElt = document.getElementById('product')
+
+  // Clone template
   const cloneElt = document.importNode(templateElt.content, true)
 
-  cloneElt.getElementById('teddieImage').src = teddie.imageUrl
-  cloneElt.getElementById('teddieName').textContent = teddie.name
-  cloneElt.getElementById('teddiePrice').textContent = teddie.price
-  cloneElt.getElementById('teddieDescription').textContent = teddie.description
+  // Info template
+  cloneElt.getElementById('productImage').src = product.imageUrl
+  cloneElt.getElementById('productName').textContent = product.name
+  cloneElt.getElementById('productPrice').textContent = `${product.price / 100}.00 €`
+  cloneElt.getElementById('productDescription').textContent = product.description
+  cloneElt.getElementById('productLink').href = `pages/produit.html?id=${product._id}`
 
-
-  document.getElementById("main").appendChild(cloneElt)
-
+  // Display template
+  document.getElementById('productsList').appendChild(cloneElt)
 }
-
-
-
-

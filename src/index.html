@@ -4,11 +4,12 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Orinours - Acceuil</title>
+    <title>Acceuil - Orinours</title>
     <meta name="title" content="Orinours"/>
     <meta name="description" content="Orinours à mis tout son cœur à fabriquer quelques choses de vraiment spéciales. Découvrez nos oursons en peluche fait main par nos artisans locaux, des articles uniques créés pour apporter de la joie dans votre foyer."/>
+    <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="/front-end/src/style.css">
+    <link rel="stylesheet" href="/front-end/dist/css/style.css">
     <script src="https://kit.fontawesome.com/a6b7960de6.js" crossorigin="anonymous"></script>
     <script src="/front-end/src/js/config.js"></script>
     <script src="/front-end/src/js/index.js" defer></script>
@@ -18,22 +19,13 @@
     <header>
         <div class="container">
           <div class="row">
-            <nav class="col navbar navbar-expand-lg navbar-light">
-              <a class="navbar-brand" href="index.html"> <img src="/front-end/dist/images/logo.svg" alt="Logo de Orinoco"></a>
-              <button
-                class="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
+            <nav class="col navbar navbar-expand">
+              <a class="navbar-brand" href="/front-end/src/index.html"> <img src="/front-end/dist/images/logo.svg" alt="Logo de Orinoco"></a>
+
               <div id="navbarContent" class="collapse navbar-collapse flex-grow-1 text-right">
                 <ul class="navbar-nav ml-auto flex-nowrap">
                   <li class="nav-item">
-                    <a class="nav-link text-dark" href="/src/html/panier.html">Mon panier</a>
+                    <a class="nav-link text-dark" href="/front-end/src/pages/panier.html">Mon panier</a>
                   </li>
                 </ul>
               </div>
@@ -42,34 +34,32 @@
         </div>
     </header>
 
-    <div class="container">
-      <main id="main">
-        <template id="teddie">
-            <section class="rounded">
-                <a id="productLink" href="">
-                    <figure class="figure">
-                        <img id="teddieImage" class="img-fluid figure-img w-25" src="" alt="">
-                        <figcaption class="pt-4">
-                            <div class="flex items-center mb-2">
-                                <h2 id="teddieName" class="font-bold "></h2>
-                                <div class="flex-grow"></div>
-                                <div class="flex items-center mr-4">
-                                <div class="h-5"> <i class="fas fa-star"></i> </div>
-                                <div class="h-5"> <i class="fas fa-star"></i> </div>
-                                <div class="h-5"> <i class="fas fa-star"></i> </div>
-                                <div class="h-5"> <i class="fas fa-star"></i> </div>
-                                <div class="h-5"> <i class="fas fa-star"></i> </div>
-                                </div>
-                                <span id="teddiePrice" class="text-sm font-bold bg-white px-2 py-1 rounded"></span>
-                            </div>
-                            <p id="teddieDescription" class="text-black text-opacity-80 text-sm text-justify"></p>
-                        </figcaption>
-                    </figure>
-                </a>
-            </section>
-        </template>
-      </main>
+    <div class="text-defil jumbotron">
+      <div>⚠️<span class="font-weight-bold">ATTENTION</span> ⚠️ les images qui vont suivre peuvent heurter la sensibilité.</div>
     </div>
+    
+<ul id="productsList" class="row list-unstyled m-4"></ul>">
+</ul>
+</div>
+
+<!-- PRODUCT TEMPLATE -->
+<template id="product">
+<li class=" col-12 col-md-6 col-lg-4 m-auto bg-grey">
+  <a id="productLink" href="" class="text-decoration-none text-dark">
+    <figure>
+      <img id="productImage" class="img-fluid" src="" alt="">
+      <figcaption>
+        <div class="d-flex justify-content-between">
+          <h2 id="productName" class="font-bold "></h2>
+          <span id="productPrice" class="d-flex align-items-center"></span>
+        </div>
+        <p id="productDescription" class=""></p>
+      </figcaption>
+    </figure>
+  </a>
+</li>
+</template>
+<!-- PRODUCT TEMPLATE -->
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
