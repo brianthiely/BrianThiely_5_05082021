@@ -1,9 +1,10 @@
-// Main function, auto called at load time
+// Fonction qui s'appelle automatiquement
 ;(async () => {
   const products = await getProducts()
   hydratePage(products)
 })()
 
+// Fonction qui permet de recuperer le tableau des produits
 async function getProducts() {
   return fetch(`${apiUrl}/api/teddies`)
     .then((httpBodyResponse) => httpBodyResponse.json())
@@ -15,21 +16,18 @@ async function getProducts() {
     })
 }
 
+  // Boucle pour appliquer le template sur chaque produit
 function hydratePage(products) {
-  // Remove loading boxes
-  document.getElementById('productsList').innerHTML = ''
-
-  // Loop over all products and displays them
   products.forEach((product) => {
     displayProduct(product)
   })
 }
 
 function displayProduct(product) {
-  // Get template
+  // Ou afficher le template
   const templateElt = document.getElementById('product')
 
-  // Clone template
+  // Cloner le template
   const cloneElt = document.importNode(templateElt.content, true)
 
   // Info template
@@ -39,6 +37,6 @@ function displayProduct(product) {
   cloneElt.getElementById('productDescription').textContent = product.description
   cloneElt.getElementById('productLink').href = `pages/produit.html?id=${product._id}`
 
-  // Display template
+  // Afficher template
   document.getElementById('productsList').appendChild(cloneElt)
 }
