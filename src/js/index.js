@@ -1,11 +1,11 @@
-// Fonction qui s'appelle automatiquement
+// Fonction qui apelle toutes mes fonctions automatiquement
 ;(async () => {
   const products = await getProducts()
-  hydratePage(products)
+  buildPage(products)
 })()
 
 // Fonction qui permet de recuperer le tableau des produits
-async function getProducts() {
+ function getProducts() {
   return fetch(`${apiUrl}/api/teddies`)
     .then((httpBodyResponse) => httpBodyResponse.json())
     .then((products) => products)
@@ -17,7 +17,7 @@ async function getProducts() {
 }
 
   // Boucle pour appliquer le template sur chaque produit
-function hydratePage(products) {
+function buildPage(products) {
   products.forEach((product) => {
     displayProduct(product)
   })
