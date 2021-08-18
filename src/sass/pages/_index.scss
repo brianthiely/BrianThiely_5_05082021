@@ -30,11 +30,24 @@
 	background-color: #e3deda;
 }
 
+.card {
+	width: 18rem;
+}
+
 #productName {
 	color: $tc-title;
+	font-size: x-large;
+}
+
+#productPrice {
+	font-weight: bold;
 }
 
 #productImage {
 	min-height: 218px;
-	width: auto;
 }
+
+#productDescription {
+	text-align: justify;
+}
+

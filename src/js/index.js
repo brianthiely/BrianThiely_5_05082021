@@ -7,7 +7,7 @@
 // Fonction qui permet de recuperer le tableau des produits
  function getProducts() {
   return fetch(`${apiUrl}/api/teddies`)
-    .then((httpBodyResponse) => httpBodyResponse.json())
+    .then((response) => response.json())
     .then((products) => products)
     .catch((error) => {
       alert(

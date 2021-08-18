@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Produit - Orinours</title>
+    <title>Acceuil - Orinours</title>
     <meta name="title" content="Orinours"/>
     <meta name="description" content="Orinours à mis tout son cœur à fabriquer quelques choses de vraiment spéciales. Découvrez nos oursons en peluche fait main par nos artisans locaux, des articles uniques créés pour apporter de la joie dans votre foyer."/>
     <link href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/front-end/dist/css/style.css">
     <script src="https://kit.fontawesome.com/a6b7960de6.js" crossorigin="anonymous"></script>
     <script src="/front-end/src/js/config.js"></script>
-    <script src="/front-end/src/js/produit.js" defer></script>
+    <script src="/front-end/src/js/index.js" defer></script>
   </head>
 
   <body>
@@ -20,7 +20,7 @@
         <div class="container">
           <div class="row">
             <nav class="col navbar navbar-expand">
-              <a class="navbar-brand" href="/front-end/src/index.html"> <img src="/front-end/dist/images/logo.svg" alt="Logo de Orinoco"></a>
+              <a class="navbar-brand" href="index.html"> <img src="/front-end/dist/images/logo.svg" alt="Logo de Orinoco"></a>
 
               <div id="navbarContent" class="collapse navbar-collapse flex-grow-1 text-right">
                 <ul class="navbar-nav ml-auto flex-nowrap">
@@ -34,41 +34,34 @@
         </div>
     </header>
 
-<div class=" col-11 col-md-5 col-lg-3 m-4 bg-grey pt-1 pr-1 pl-1">
-    <figure>
-      <img id="productImage" class="img-fluid mb-2" src="" alt="">
-      <figcaption>
-        <div class="d-flex justify-content-between">
-          <h2 id="productName" class="font-bold"></h2>
-          <span id="productPrice" class="d-flex align-items-center text-danger"></span>
-        </div>
-        <p id="productDescription" class="text-dark"></p>
-        <label for="color-select">Choisissez une couleur:</label>
-
-        <select name="couleur" id="productColors">
-            <option value="">--Choisissez une couleur--</option>
-            <option value="0"></option>
-            <option value="1"></option>
-            <option value="2"></option>
-            <option value="3"></option>
-        </select>
-        
-      </figcaption>
-    </figure>
-  </div>
+    <div class="text-defil jumbotron">
+      
+      <div>⚠️<span class="font-weight-bold">ATTENTION</span> ⚠️ les images qui vont suivre peuvent heurter la sensibilité.</div>
+    </div>
     
+<ul id="productsList" class="row list-unstyled m-4"></ul>
+</ul>
+</div>
+
+<!-- PRODUCT TEMPLATE -->
+<template id="product">
+<li class=" col-11 col-md-5 col-lg-4 mb-5">
+  <div class="card shadow">
+    <img id="productImage" class="card-img-top img-fluid" src="" alt="">
+    <div class="card-body">
+      <div class="d-flex justify-content-between">
+        <h5 id="productName" class="card-title"></h5>
+        <span id="productPrice"></span>
+      </div>
+      <p id="productDescription" class="card-text"></p>
+      <a id="productLink"  href="" class="btn btn-primary">Voir le produit</a>
+    </div>
+  </div>
+</li>
+</template>
+<!-- PRODUCT TEMPLATE -->
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
     <script
       src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
@@ -76,9 +69,3 @@
     ></script>
   </body>
 </html>
-
-
-
-
-
-
