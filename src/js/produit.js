@@ -73,8 +73,8 @@ let productCart = {
 
 // --------------------localStorage
 
-let productCartStorage = JSON.parse(localStorage.getItem("product"));
 // Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
+let productCartStorage = JSON.parse(localStorage.getItem("product"));
 
 
 // Lorsque un article est ajouter au panier la fenetre popup s'ouvre
