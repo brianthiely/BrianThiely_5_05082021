@@ -76,6 +76,8 @@ let productCart = {
 let productCartStorage = JSON.parse(localStorage.getItem("product"));
 // Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
 
+
+// Lorsque un article est ajouter au panier la fenetre popup s'ouvre
 const popupConfirm = () => {
   if(window.confirm(`L'ourson ${productName} en ${optionChoice} a bien été ajouté au panier
 Consultez le panier OK ou revenir à l'accueil ANNULER`)){
@@ -85,20 +87,25 @@ Consultez le panier OK ou revenir à l'accueil ANNULER`)){
   }
 }
 
-//  si produit déja enregistrer dans le local
-if(productCartStorage) {
+// Fonction pour ajouter un produit dans le localStorage
+const addProductLocalStorage = () => {
+  // ajout dans le tableau de l'objet avec la couleur choisie
   productCartStorage.push(productCart);
+
+  // transforme en json et envoie la key product dans le localstorage
   localStorage.setItem("product", JSON.stringify(productCartStorage));
-  console.log(productCartStorage);
-  popupConfirm()
-} else {
-  productCartStorage = [];
-  productCartStorage.push(productCart);
-  localStorage.setItem("product", JSON.stringify(productCartStorage));
-  popupConfirm()
 }
 
 
+//  si produit déja enregistrer dans le local
+if(productCartStorage) {
+  addProductLocalStorage();
+  popupConfirm()
+} else {
+  productCartStorage = [];
+  addProductLocalStorage();
+  popupConfirm()
+}
 
 });   
 
