@@ -4,7 +4,7 @@
 	buildPage(products);
 })();
 
-// Fonction qui permet de recuperer le tableau des produits
+// Fonction qui permet de recuperer les produits
 function getProducts() {
 	return fetch(`${apiUrl}/api/teddies`)
 		.then((response) => response.json())

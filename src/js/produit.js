@@ -33,15 +33,12 @@ function colorOptions(product) {
 	});
 }
 
-// Injecte les infos dans le HTML
+// Injecte les infos produits dans le HTML
 function hydrateProduct(product) {
 	document.getElementById('productImage').src = product.imageUrl;
 	document.getElementById('productName').textContent = product.name;
-	document.getElementById('productPrice').textContent = `${
-		product.price / 100
-	}.00 €`;
-	document.getElementById('productDescription').textContent =
-		product.description;
+	document.getElementById('productPrice').textContent = `${product.price / 100}.00 €`;
+	document.getElementById('productDescription').textContent = product.description;
 
 	//-------------- Récupération données séléctionner pour panier
 
