@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/brianthiely/BrianThiely_5_05082021#readme",
   "devDependencies": {
-    "prettier": "^2.3.2"
+    "prettier": "2.3.2"
   }
 }
