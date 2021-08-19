@@ -45,14 +45,16 @@ function hydrateProduct(product) {
 
 
 
-        // Récupération données séléctionner pour panier et envoie du panier
+        //-------------- Récupération données séléctionner pour panier
 
-// Récupération de l'id du formulaire
+// Récupération des données du produit
 const idForm = document.querySelector("#productOption");
+const productName = product.name
+const productPrice = product.price
 
 
 // Sélection bouton ajout au panier
-const addToCart = document.querySelector("#add-to-cart");
+const addToCart = document.querySelector("#addToCart");
 
 // Ecoute bouton addToCart
 addToCart.addEventListener("click", (e) => {
@@ -61,18 +63,49 @@ e.preventDefault();
 // Choix option dans une variable
 const optionChoice = idForm.value;
 
-
-
 // Récuperation valeurs panier
 let productCart = {
-  noms: product.name,
+  noms: productName,
   couleur: optionChoice,
-  prix: product.price / 100
+  prix: productPrice / 100
+};
+
+
+// --------------------localStorage
+
+let productCartStorage = JSON.parse(localStorage.getItem("product"));
+// Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
+
+const popupConfirm = () => {
+  if(window.confirm(`L'ourson ${productName} en ${optionChoice} a bien été ajouté au panier
+Consultez le panier OK ou revenir à l'accueil ANNULER`)){
+    window.location.href = "/front-end/pages/panier.html"
+  } else {
+    window.location.href = "/front-end/index.html"
+  }
 }
-console.log(productCart);
+
+//  si produit déja enregistrer dans le local
+if(productCartStorage) {
+  productCartStorage.push(productCart);
+  localStorage.setItem("product", JSON.stringify(productCartStorage));
+  console.log(productCartStorage);
+  popupConfirm()
+} else {
+  productCartStorage = [];
+  productCartStorage.push(productCart);
+  localStorage.setItem("product", JSON.stringify(productCartStorage));
+  popupConfirm()
+}
+
+
 
 });   
+
 }
+
+
+
 
 
 
