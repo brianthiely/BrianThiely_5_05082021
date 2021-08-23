@@ -2,9 +2,11 @@
 (async function () {
 	const productId = getProductId();
 	const product = await getProduct(productId);
-	colorOptions(product);
 	hydrateProduct(product);
+	onAddtoCart(product);
 })();
+
+
 
 // Permet de récuperer l'ID de notre produit dans l'url
 function getProductId() {
@@ -23,6 +25,7 @@ function getProduct(productId) {
 
 // Ajoute le choix du coloris
 function colorOptions(product) {
+	console.log(product);
 	const productColors = product.colors;
 	const productOption = document.getElementById('productOption');
 	productColors.forEach((color) => {
@@ -37,16 +40,26 @@ function colorOptions(product) {
 function hydrateProduct(product) {
 	document.getElementById('productImage').src = product.imageUrl;
 	document.getElementById('productName').textContent = product.name;
-	document.getElementById('productPrice').textContent = `${product.price / 100}.00 €`;
-	document.getElementById('productDescription').textContent = product.description;
+	document.getElementById('productPrice').textContent = `${
+		product.price / 100
+	}.00 €`;
+	document.getElementById('productDescription').textContent =
+		product.description;
+	colorOptions(product);
+}
 
-	//-------------- Récupération données séléctionner pour panier
+// Fonction pour ajouter un produit dans le localStorage
+function addProductLocalStorage(productCart, productCartStorage) {
+	// ajout dans le tableau de l'objet avec la couleur choisie
+	productCartStorage.push(productCart);
 
-	// Récupération des données du produit
-	const idForm = document.querySelector('#productOption');
-	const productName = product.name;
-	const productPrice = product.price;
+	// transforme en json et envoie la key product dans le localstorage
+	localStorage.setItem('product', JSON.stringify(productCartStorage));
+}
 
+//-------------- Récupération données séléctionner pour panier
+
+function onAddtoCart(product) {
 	// Sélection bouton ajout au panier
 	const addToCart = document.querySelector('#addToCart');
 
@@ -54,50 +67,43 @@ function hydrateProduct(product) {
 	addToCart.addEventListener('click', (e) => {
 		e.preventDefault();
 
+		const idForm = document.querySelector('#productOption');
 		// Choix option dans une variable
 		const optionChoice = idForm.value;
 
 		// Récuperation valeurs panier
 		let productCart = {
-			noms: productName,
-			couleur: optionChoice,
-			prix: productPrice / 100,
+			name: product.name,
+			color: optionChoice,
+			price: product.price / 100,
 		};
+		console.log(productCart);
 
 		// --------------------localStorage
 
 		// Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
 		let productCartStorage = JSON.parse(localStorage.getItem('product'));
 
-		// Lorsque un article est ajouter au panier la fenetre popup s'ouvre
-		const popupConfirm = () => {
-			if (
-				window.confirm(`L'ourson ${productName} en ${optionChoice} a bien été ajouté au panier
-Consultez le panier OK ou revenir à l'accueil ANNULER`)
-			) {
-				window.location.href = '/front-end/pages/panier.html';
-			} else {
-				window.location.href = '/front-end/index.html';
-			}
-		};
-
-		// Fonction pour ajouter un produit dans le localStorage
-		const addProductLocalStorage = () => {
-			// ajout dans le tableau de l'objet avec la couleur choisie
-			productCartStorage.push(productCart);
-
-			// transforme en json et envoie la key product dans le localstorage
-			localStorage.setItem('product', JSON.stringify(productCartStorage));
-		};
-
 		//  si produit déja enregistrer dans le local
 		if (productCartStorage) {
-			addProductLocalStorage();
-			popupConfirm();
+			addProductLocalStorage(productCart, productCartStorage);
+			popupConfirm(productCart);
 		} else {
-			productCartStorage = [];
-			addProductLocalStorage();
-			popupConfirm();
+			// productCartStorage = [];
+			addProductLocalStorage(productCart, productCartStorage);
+			popupConfirm(productCart);
 		}
 	});
+}
+
+// Lorsque un article est ajouter au panier la fenetre popup s'ouvre
+function popupConfirm(productCart) {
+	if (
+		window.confirm(`L'ourson ${productCart.name} en ${productCart.color} a bien été ajouté au panier
+Consultez le panier OK ou revenir à l'accueil ANNULER`)
+	) {
+		window.location.href = '/front-end/pages/panier.html';
+	} else {
+		window.location.href = '/front-end/index.html';
+	}
 }
