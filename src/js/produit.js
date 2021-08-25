@@ -6,8 +6,6 @@
 	onAddtoCart(product);
 })();
 
-
-
 // Permet de récuperer l'ID de notre produit dans l'url
 function getProductId() {
 	return new URL(location.href).searchParams.get('id');
@@ -89,7 +87,7 @@ function onAddtoCart(product) {
 			addProductLocalStorage(productCart, productCartStorage);
 			popupConfirm(productCart);
 		} else {
-			// productCartStorage = [];
+			productCartStorage = [];
 			addProductLocalStorage(productCart, productCartStorage);
 			popupConfirm(productCart);
 		}

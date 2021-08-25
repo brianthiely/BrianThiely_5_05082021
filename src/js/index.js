@@ -21,6 +21,7 @@ function buildPage(products) {
 	});
 }
 
+// Fonction qui affiches les produits
 function displayProduct(product) {
 	// Ou afficher le template
 	const templateElt = document.getElementById('product');

@@ -4,10 +4,29 @@ console.log(productCartStorage);
 
 // Selection de la classe ou le code HTML sera injecter
 const containerPanier = document.querySelector('#containerPanier');
+let basketProducts = [];
 
 // Si le panier est vide
 if (productCartStorage === null) {
-	console.log('JE SUIS VIDE');
-} else {
-	console.log('Je ne suis pas vide');
+	const emptyBasket = `<div class = "container-emptyBasket font-weight-bold">
+							<div> Le panier est vide </div>
+						</div>`;
+	containerPanier.innerHTML = emptyBasket;
+}
+// Combien d'article dans le local ?
+else {
+	for (i = 0; i < productCartStorage.length; i++) {
+		basketProducts =
+			basketProducts +
+			`
+	<div class="recapPanier d-flex justify-content-around mb-4">
+		<div>${productCartStorage[i].name} / ${productCartStorage[i].color}</div>	
+		<div>${productCartStorage[i].price}€ - supprimer article</div>
+	</div>
+	`;
+	}
+	if (i === productCartStorage.length) {
+		// injection HTML
+		containerPanier.innerHTML = basketProducts;
+	}
 }
