@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "sass --watch src/sass/main.scss:dist/css/style.css --style compressed"
+    "build": "sass src/sass/main.scss:dist/css/style.css --style compressed",
+    "sass-watch": "sass --watch src/sass/main.scss:dist/css/style.css"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/brianthiely/BrianThiely_5_05082021.git"
