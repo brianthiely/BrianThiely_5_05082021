@@ -1,19 +1,20 @@
 // Fonction qui apelle toutes mes fonctions automatiquement
 (async function () {
-	const productId = getProductId();
+	const productId = getParamId();
 	const product = await getProduct(productId);
 	hydrateProduct(product);
 	onAddtoCart(product);
 })();
 
 // Permet de récuperer l'ID de notre produit dans l'url
-function getProductId() {
+function getParamId() {
 	return new URL(location.href).searchParams.get('id');
 }
 
 // Fonction qui permet de recuperer le produit choisie
-function getProduct(productId) {
-	return fetch(`${apiUrl}/api/teddies/${productId}`)
+// Fonction qui permet de recuperer le produit choisie
+async function getProduct(productId) {
+	return await fetch(`${apiUrl}/api/teddies/${productId}`)
 		.then((res) => res.json())
 		.then((products) => products)
 		.catch((error) => {

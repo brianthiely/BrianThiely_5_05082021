@@ -56,13 +56,78 @@
 				</div>
 			</div>
 		</header>
+		<h2 class="h4 text-center">Récapitulatif du panier</h2>
+		<div
+			class="container border border-dark text-center w-100"
+			id="containerPanier"
+		></div>
 
-		<div class="container border border-dark text-center w-100" id="containerPanier">
-			<h2 class="h4">Récapitulatif du panier</h2>
-			
+		<div class="mt-4" id="formOrder">
+			<h2 class="h4 text-center">
+				Remplissez le formulaire pour valider la commande
+			</h2>
+
+			<form class="mt-4 text-center">
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="firstName">Prénom :</label>
+						<input
+							type="text"
+							name="firstName"
+							id="firstName"
+							placeholder="Jean"
+							required
+						/>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="lastName">Nom :</label>
+						<input
+							type="text"
+							name="lastName"
+							id="lastName"
+							placeholder="Dupont"
+							required
+						/>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="address">Adresse :</label>
+						<input
+							name="address"
+							id="address"
+							placeholder="66 Avenue des Champs Elysée"
+							required
+						/>
+					</div>
+					<div class="form-group col-md-6">
+						<label for="city">Ville :</label>
+						<input
+							type="text"
+							name="city"
+							id="city"
+							placeholder="Paris(8)"
+							required
+						/>
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<label for="email">E-mail :</label>
+					<input
+						type="email"
+						name="email"
+						id="email"
+						placeholder="jean.dupont@gmail.com"
+						required
+					/>
+				</div>
+				<button id="formPost" type="submit" name="formPost">
+					Confirmer la commande
+				</button>
+			</form>
+
+			<form class="mt-4 text-center"></form>
 		</div>
-
-		
 
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 		<script

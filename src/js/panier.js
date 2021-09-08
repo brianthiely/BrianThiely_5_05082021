@@ -46,35 +46,3 @@ const totalPrice = getPrice.reduce(reducer, 0);
 const displayTotalPrice = `<div class="font-weight-bold"> Le prix total est de : ${totalPrice}€</div>`;
 containerPanier.insertAdjacentHTML('beforeend', displayTotalPrice);
 
-// ---------FORMULAIRE
-
-function displayForm() {
-	const positionForm = document.querySelector('#containerPanier');
-
-	const hydrateForm = `<div id="formOrder">
-	<h2>Remplissez le formulaire pour valider la commande</h2>
-
-	<form>
-		<label for="firstName">Prénom :</label>
-		<input type="text" name="firstName" id="firstName" placeholder="Jean" required>
-
-		<label for="lastName">Nom :</label>
-		<input type="text" name="lastName" id="lastName" placeholder="Dupont" required>
-
-		<label for="address">Adresse :</label>
-		<input name="address" id="address" placeholder="66 Avenue des Champs Elysée" required>
-
-		<label for="city">Ville :</label>
-		<input type="text" name="city" id="city" placeholder="Paris(8)" required>
-
-		<label for="email">E-mail :</label>
-		<input type="email" name="email" id="email" placeholder="jean.dupont@gmail.com" required>
-
-		<button id="formPost" type="submit" name="formPost">Confirmer la commande</button>
-	</form>
-</div>`;
-	positionForm.insertAdjacentHTML('afterend, hydrateForm');
-}
-
-// Appelle fonction pour affichage form
-displayForm();
