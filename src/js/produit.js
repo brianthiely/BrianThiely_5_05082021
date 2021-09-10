@@ -52,8 +52,8 @@ function addProductLocalStorage(productCart, productCartStorage) {
 	// ajout dans le tableau de l'objet avec la couleur choisie
 	productCartStorage.push(productCart);
 
-	// transforme en json et envoie la key product dans le localstorage
-	localStorage.setItem('product', JSON.stringify(productCartStorage));
+	// transforme en json et envoie la key products dans le localstorage
+	localStorage.setItem('products', JSON.stringify(productCartStorage));
 }
 
 //-------------- Récupération données séléctionner pour panier
@@ -81,7 +81,7 @@ function onAddtoCart(product) {
 		// --------------------localStorage
 
 		// Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
-		let productCartStorage = JSON.parse(localStorage.getItem('product'));
+		let productCartStorage = JSON.parse(localStorage.getItem('products'));
 
 		//  si produit déja enregistrer dans le local
 		if (productCartStorage) {

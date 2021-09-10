@@ -1,5 +1,5 @@
 // Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
-let productCartStorage = JSON.parse(localStorage.getItem('product'));
+let productCartStorage = JSON.parse(localStorage.getItem('products'));
 console.log(productCartStorage);
 
 // Selection de la classe ou le code HTML sera injecter
@@ -46,3 +46,33 @@ const totalPrice = getPrice.reduce(reducer, 0);
 const displayTotalPrice = `<div class="font-weight-bold"> Le prix total est de : ${totalPrice}€</div>`;
 containerPanier.insertAdjacentHTML('beforeend', displayTotalPrice);
 
+// Selection bouton envoie formulaire
+const submitForm = document.querySelector('#formPost');
+
+submitForm.addEventListener('click', (e) => {
+	e.preventDefault();
+	// Récupération des valeurs du form
+	const contact = {
+		firstName: document.querySelector('#firstName').value,
+		lastName: document.querySelector('#lastName').value,
+		address: document.querySelector('#address').value,
+		city: document.querySelector('#city').value,
+		email: document.querySelector('#email').value,
+	};
+
+	// --------Validation formulaire
+	function firstNameControle() {
+		const firstName = contact.firstName;
+		if (/^[A-Za-z]{3,20}$/.test(firstName)) {
+			return true;
+		} else {
+			alert(
+				'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 20 caractères, minimum 3 caractères.'
+			);
+			return false;
+		}
+	}
+
+	// Mettre l'objet "contact" dans le localStorage
+	localStorage.setItem('contact', JSON.stringify(contact));
+});
