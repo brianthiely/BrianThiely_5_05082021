@@ -73,6 +73,61 @@ submitForm.addEventListener('click', (e) => {
 		}
 	}
 
-	// Mettre l'objet "contact" dans le localStorage
-	localStorage.setItem('contact', JSON.stringify(contact));
+	function lastNameControle() {
+		const lastName = contact.lastName;
+		if (/^[A-Za-z]{3,20}$/.test(lastName)) {
+			return true;
+		} else {
+			alert(
+				'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 20 caractères, minimum 3 caractères.'
+			);
+			return false;
+		}
+	}
+
+	function addressControle() {
+		const address = contact.address;
+		if (/^[A-Za-z0-100\s]{5,50}$/.test(address)) {
+			return true;
+		} else {
+			alert('Les symboles ne sont pas autorisé.');
+			return false;
+		}
+	}
+
+	function cityControle() {
+		const city = contact.city;
+		if (/^[A-Za-z\s]{3,45}$/.test(city)) {
+			return true;
+		} else {
+			alert(
+				'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 45 caractères, minimum 3 caractères.'
+			);
+			return false;
+		}
+	}
+
+	function emailControle() {
+		const email = contact.email;
+		if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+			return true;
+		} else {
+			alert("L'email n'est pas valide");
+			return false;
+		}
+	}
+
+	// controle validité formulaire avant envoie danz le local storage
+	if (
+		firstNameControle() &&
+		lastNameControle() &&
+		addressControle() &&
+		cityControle() &&
+		emailControle()
+	) {
+		// Mettre l'objet "contact" dans le localStorage
+		localStorage.setItem('contact', JSON.stringify(contact));
+	} else {
+		alert('Veuillez remplir le formulaire');
+	}
 });
