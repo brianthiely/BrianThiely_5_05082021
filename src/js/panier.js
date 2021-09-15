@@ -49,7 +49,7 @@ containerPanier.insertAdjacentHTML('beforeend', displayTotalPrice);
 // Selection bouton envoie formulaire
 const submitForm = document.querySelector('#formPost');
 
-submitForm.addEventListener('click', (e) => {
+submitForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 	// Récupération des valeurs du form
 	const contact = {
@@ -130,4 +130,28 @@ submitForm.addEventListener('click', (e) => {
 	} else {
 		alert('Veuillez remplir le formulaire');
 	}
+
+	// Le tableau des produits et l'objet formulaire sont mis dans un objet à envoyer au serveur
+	const order = {
+		productCartStorage,
+		contact,
+	};
+
+	// Envoyer l'objet dataSendServer vers le serveur
+	const requestServer = {
+		method: 'POST',
+		body: JSON.stringify(order),
+		headers: { 'Content-Type': 'application/json; charset=utf-8' },
+	};
+	// Pour voir le resultat du serveur dans la console
+	fetch(`${apiUrl}/api/teddies/order`, requestServer)
+    .then((response) => response.json())
+    .then((json) => {
+      console.log(json)
+    //   localStorage.removeItem('shoppingCart')
+      window.location.href = `${window.location.origin}/confirmation.html?orderId=${json.orderId}`
+    })
+    .catch(() => {
+      alert(error)
+    })
 });
