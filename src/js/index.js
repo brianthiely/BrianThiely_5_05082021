@@ -39,7 +39,7 @@ function displayProduct(product) {
 		product.description;
 	cloneElt.getElementById(
 		'productLink'
-	).href = `pages/produit.html?id=${product._id}`;
+	).href = `./pages/produit.html?id=${product._id}`;
 
 	// Afficher template
 	document.getElementById('productsList').appendChild(cloneElt);

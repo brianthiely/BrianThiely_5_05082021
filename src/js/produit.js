@@ -101,8 +101,8 @@ function popupConfirm(productCart) {
 		window.confirm(`L'ourson ${productCart.name} en ${productCart.color} a bien été ajouté au panier
 Consultez le panier OK ou revenir à l'accueil ANNULER`)
 	) {
-		window.location.href = '/front-end/pages/panier.html';
+		window.location.href = './panier.html';
 	} else {
-		window.location.href = '/front-end/index.html';
+		window.location.href = './../index.html';
 	}
 }

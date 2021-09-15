@@ -148,7 +148,7 @@ submitForm.addEventListener('submit', (e) => {
     .then((response) => response.json())
     .then((json) => {
       console.log(json)
-    //   localStorage.removeItem('shoppingCart')
+      localStorage.removeItem('shoppingCart')
       window.location.href = `${window.location.origin}/confirmation.html?orderId=${json.orderId}`
     })
     .catch(() => {
