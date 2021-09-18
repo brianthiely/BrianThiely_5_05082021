@@ -1,13 +1,14 @@
 // Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
-let products = JSON.parse(localStorage.getItem('products'));
-console.log(products);
+let productCartStorage = JSON.parse(localStorage.getItem('products'));
+console.log('productCartStorage');
+console.log(productCartStorage);
 
 // Selection de la classe ou le code HTML sera injecter
 const containerPanier = document.querySelector('#containerPanier');
 let basketProducts = [];
 
 // Si le panier est vide
-if (products === null || products == 0) {
+if (productCartStorage === null || productCartStorage == 0) {
 	const emptyBasket = `<div class = "container-emptyBasket font-weight-bold">
 							<div> Le panier est vide </div>
 						</div>`;
@@ -15,17 +16,17 @@ if (products === null || products == 0) {
 }
 // Combien d'article dans le local ?
 else {
-	for (i = 0; i < products.length; i++) {
+	for (i = 0; i < productCartStorage.length; i++) {
 		basketProducts =
 			basketProducts +
 			`
 	<div class="recapPanier d-flex justify-content-around mb-4">
-		<div class="w-25 text-left">${products[i].name} / ${products[i].color}</div>	
-		<div class="">${products[i].price}€ </div>
+		<div class="w-25 text-left">${productCartStorage[i].name} / ${productCartStorage[i].color}</div>	
+		<div class="">${productCartStorage[i].price}€ </div>
 	</div>
 	`;
 	}
-	if (i === products.length) {
+	if (i === productCartStorage.length) {
 		// injection HTML
 		containerPanier.innerHTML = basketProducts;
 	}
@@ -33,9 +34,9 @@ else {
 
 // Tout les prix des produits sont mis dans un tableau pour être calculer avec reducer
 let getPrice = [];
-for (let p = 0; p < products.length; p++) {
-	products[p].price;
-	getPrice.push(products[p].price);
+for (let p = 0; p < productCartStorage.length; p++) {
+	productCartStorage[p].price;
+	getPrice.push(productCartStorage[p].price);
 }
 
 // additionner tout les prix du tableau
@@ -131,32 +132,13 @@ submitForm.addEventListener('submit', (e) => {
 		alert('Veuillez remplir le formulaire');
 	}
 
-	// Le tableau des produits et l'objet formulaire sont mis dans un objet à envoyer au serveur
-	// const order = {
-	// 	products,
-	// 	contact,
-	// };
-	// console.log('order');
-	// console.log(order);
-
-	const promise01 = fetch(`${apiUrl}/api/teddies/order`, {
-		method: 'POST',
-		body: JSON.stringify(products, contact),
-		headers: {
-			'Content-Type': 'application/json charset; charset=utf-8',
-		},
-	});
-
-	promise01.then(async (response) => {
-		try {
-			console.log("response");
-			console.log(response);
-
-			const contenu = await response.json();
-			console.log("contenu");
-			console.log(contenu);
-		} catch (e) {
-			console.log(e);
-		}
-	});
+	const order = {
+		productCartStorage,
+		contact,
+	};
+	const products = Object.values(productCartStorage).map((product) => {
+		return product._id
+	  })
+	  console.log("products");
+	  console.log(products);
 });
