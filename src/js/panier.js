@@ -165,6 +165,7 @@ submitForm.addEventListener('submit', (e) => {
 			const contenu = await response.json();
 			console.log("contenu");
 			console.log(contenu);
+			window.location.href = `./confirmation.html?orderId=${contenu.orderId}`
 		} catch (e) {
 			console.log(e);
 		}
