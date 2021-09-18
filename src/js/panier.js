@@ -136,22 +136,29 @@ submitForm.addEventListener('submit', (e) => {
 		productCartStorage,
 		contact,
 	};
+	console.log('order');
+	console.log(order);
 
-	// Envoyer l'objet dataSendServer vers le serveur
-	const requestServer = {
+	const promise01 = fetch(`${apiUrl}/api/teddies/order`, {
 		method: 'POST',
 		body: JSON.stringify(order),
-		headers: { 'Content-Type': 'application/json; charset=utf-8' },
-	};
-	// Pour voir le resultat du serveur dans la console
-	fetch(`${apiUrl}/api/teddies/order`, requestServer)
-    .then((response) => response.json())
-    .then((json) => {
-      console.log(json)
-      localStorage.removeItem('shoppingCart')
-      window.location.href = `${window.location.origin}/confirmation.html?orderId=${json.orderId}`
-    })
-    .catch(() => {
-      alert(error)
-    })
+		headers: {
+			'Content-Type': 'application/json charset; charset=utf-8',
+		},
+	});
+	promise01.then(async(response)=>{
+		try{
+			console.log("response");
+			console.log(response);
+
+			const contenu = await response.json();
+			console.log(contenu);
+
+		} catch(e){
+			console.log(e);
+		}
+	})
+
+
+
 });

@@ -12,7 +12,6 @@ function getParamId() {
 }
 
 // Fonction qui permet de recuperer le produit choisie
-// Fonction qui permet de recuperer le produit choisie
 async function getProduct(productId) {
 	return await fetch(`${apiUrl}/api/teddies/${productId}`)
 		.then((res) => res.json())
