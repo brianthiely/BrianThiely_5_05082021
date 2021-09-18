@@ -6,6 +6,7 @@ console.log(productCartStorage);
 // Selection de la classe ou le code HTML sera injecter
 const containerPanier = document.querySelector('#containerPanier');
 let basketProducts = [];
+let products = [];
 
 // Si le panier est vide
 if (productCartStorage === null || productCartStorage == 0) {
@@ -25,6 +26,10 @@ else {
 		<div class="">${productCartStorage[i].price}€ </div>
 	</div>
 	`;
+
+		products.push(`${productCartStorage[i].id}`);
+		console.log('arrayproducts');
+		console.log(products);
 	}
 	if (i === productCartStorage.length) {
 		// injection HTML
@@ -53,7 +58,7 @@ const submitForm = document.querySelector('#formPost');
 submitForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 	// Récupération des valeurs du form
-	const contact = {
+	const formValue = {
 		firstName: document.querySelector('#firstName').value,
 		lastName: document.querySelector('#lastName').value,
 		address: document.querySelector('#address').value,
@@ -63,7 +68,7 @@ submitForm.addEventListener('submit', (e) => {
 
 	// --------Validation formulaire
 	function firstNameControle() {
-		const firstName = contact.firstName;
+		const firstName = formValue.firstName;
 		if (/^[A-Za-z]{3,20}$/.test(firstName)) {
 			return true;
 		} else {
@@ -75,7 +80,7 @@ submitForm.addEventListener('submit', (e) => {
 	}
 
 	function lastNameControle() {
-		const lastName = contact.lastName;
+		const lastName = formValue.lastName;
 		if (/^[A-Za-z]{3,20}$/.test(lastName)) {
 			return true;
 		} else {
@@ -87,7 +92,7 @@ submitForm.addEventListener('submit', (e) => {
 	}
 
 	function addressControle() {
-		const address = contact.address;
+		const address = formValue.address;
 		if (/^[A-Za-z0-100\s]{5,50}$/.test(address)) {
 			return true;
 		} else {
@@ -97,7 +102,7 @@ submitForm.addEventListener('submit', (e) => {
 	}
 
 	function cityControle() {
-		const city = contact.city;
+		const city = formValue.city;
 		if (/^[A-Za-z\s]{3,45}$/.test(city)) {
 			return true;
 		} else {
@@ -109,7 +114,7 @@ submitForm.addEventListener('submit', (e) => {
 	}
 
 	function emailControle() {
-		const email = contact.email;
+		const email = formValue.email;
 		if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
 			return true;
 		} else {
@@ -117,6 +122,14 @@ submitForm.addEventListener('submit', (e) => {
 			return false;
 		}
 	}
+
+	// Données à envoyer vers le serveur
+	const order = {
+		contact: formValue,
+		products: products,
+	};
+	console.log('order');
+	console.log(order);
 
 	// controle validité formulaire avant envoie danz le local storage
 	if (
@@ -127,18 +140,33 @@ submitForm.addEventListener('submit', (e) => {
 		emailControle()
 	) {
 		// Mettre l'objet "contact" dans le localStorage
-		localStorage.setItem('contact', JSON.stringify(contact));
+		localStorage.setItem('contact', JSON.stringify(formValue));
 	} else {
 		alert('Veuillez remplir le formulaire');
 	}
 
-	const order = {
-		productCartStorage,
-		contact,
-	};
-	const products = Object.values(productCartStorage).map((product) => {
-		return product._id
-	  })
-	  console.log("products");
-	  console.log(products);
+	// Envoie de l'objet order au serveur
+	const requestServer = fetch(`${apiUrl}/api/teddies/order`, {
+		method: 'POST',
+		body: JSON.stringify(order),
+		headers: {
+			'Content-Type': 'application/json; charset=utf-8',
+		},
+	});
+	console.log('requestServer');
+	console.log(requestServer);
+
+	// Voir le resultat serveur dans la console
+	requestServer.then(async (response) => {
+		try {
+			console.log('response');
+			console.log(response);
+
+			const contenu = await response.json();
+			console.log("contenu");
+			console.log(contenu);
+		} catch (e) {
+			console.log(e);
+		}
+	});
 });

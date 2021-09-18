@@ -74,7 +74,9 @@ function onAddtoCart(product) {
 			name: product.name,
 			color: optionChoice,
 			price: product.price / 100,
+			id: product._id
 		};
+		console.log("productCart");
 		console.log(productCart);
 
 		// --------------------localStorage
