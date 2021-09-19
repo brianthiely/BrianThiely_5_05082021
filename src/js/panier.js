@@ -52,7 +52,7 @@ function hydrateCart(productCartStorage, basketProducts) {
 	const displayTotalPrice = `<div class="font-weight-bold"> Le prix total est de : ${totalPrice}€</div>`;
 	containerPanier.insertAdjacentHTML('beforeend', displayTotalPrice);
 }
-hydrateCart(productCartStorage, basketProducts)
+hydrateCart(productCartStorage, basketProducts);
 
 // Selection bouton envoie formulaire
 const submitForm = document.querySelector('#formPost');
@@ -61,88 +61,81 @@ const submitForm = document.querySelector('#formPost');
 function sendOrder() {
 	submitForm.addEventListener('submit', (e) => {
 		e.preventDefault();
-		// Récupération des valeurs du form
-		const formValue = {
-			firstName: document.querySelector('#firstName').value,
-			lastName: document.querySelector('#lastName').value,
-			address: document.querySelector('#address').value,
-			city: document.querySelector('#city').value,
-			email: document.querySelector('#email').value,
-		};
 
-		// --------Validation formulaire
-		function firstNameControle() {
-			const firstName = formValue.firstName;
-			if (/^[A-Za-z]{3,20}$/.test(firstName)) {
-				return true;
-			} else {
-				alert(
-					'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 20 caractères, minimum 3 caractères.'
-				);
-				return false;
+		const formAttributesWithValidation = [
+			{
+				label: 'firstName',
+				value: e.target.firstName.value,
+				error_message: 'Veuillez entrez votre firstname',
+				regex: /^[A-Za-z]{3,20}$/,
+			},
+			{
+				label: 'lastName',
+				value: e.target.lastName.value,
+				error_message: 'Veuillez entrez votre lastName',
+				regex: /^[A-Za-z]{3,20}$/,
+			},
+			{
+				label: 'address',
+				value: e.target.address.value,
+				error_message: 'Veuillez entrez votre lastName',
+				regex: /^[A-Za-z0-100\s]{5,50}$/,
+			},
+			{
+				label: 'city',
+				value: e.target.city.value,
+				error_message: 'Veuillez indiquer votre ville',
+				regex: /^[A-Za-z\s]{3,45}$/,
+			},
+			{
+				label: 'email',
+				value: e.target.email.value,
+				error_message: 'Veuillez indiquer votre adresse mail',
+				regex: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+			},
+		];
+
+		const errorsValidations = [];
+
+		// Boucle de verification ....
+		formAttributesWithValidation.forEach((rule) => {
+			if (rule.regex.test(rule.value) === false) {
+				errorsValidations.push({
+					label: rule.label,
+					message: rule.error_message,
+				});
 			}
+		});
+
+		// controle validité formulaire avant envoie danz le local storage
+		if (errorsValidations.length != 0) {
+			return alert('Veuillez remplir le formulaire');
 		}
 
-		function lastNameControle() {
-			const lastName = formValue.lastName;
-			if (/^[A-Za-z]{3,20}$/.test(lastName)) {
-				return true;
-			} else {
-				alert(
-					'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 20 caractères, minimum 3 caractères.'
-				);
-				return false;
-			}
-		}
+		const contactArray = formAttributesWithValidation.map((item) => {
+			return [item.label, item.value];
+		});
+		console.log(contactArray);
 
-		function addressControle() {
-			const address = formValue.address;
-			if (/^[A-Za-z0-100\s]{5,50}$/.test(address)) {
-				return true;
-			} else {
-				alert('Les symboles ne sont pas autorisé.');
-				return false;
-			}
-		}
+		// Transformer contactArray en Objet "contact"
+		const contact = Object.fromEntries(contactArray);
+		console.log(contact);
 
-		function cityControle() {
-			const city = formValue.city;
-			if (/^[A-Za-z\s]{3,45}$/.test(city)) {
-				return true;
-			} else {
-				alert(
-					'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 45 caractères, minimum 3 caractères.'
-				);
-				return false;
-			}
-		}
-
-		function emailControle() {
-			const email = formValue.email;
-			if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-				return true;
-			} else {
-				alert("L'email n'est pas valide");
-				return false;
-			}
-		}
+		// Mettre l'objet "contact" dans le localStorage
+		localStorage.setItem(
+			'contact',
+			JSON.stringify(Object.fromEntries(contactArray))
+		);
 
 		// Données à envoyer vers le serveur
 		const order = {
-			contact: formValue,
+			contact: contact,
 			products: products,
 		};
 		console.log('order');
 		console.log(order);
 
-		// controle validité formulaire avant envoie danz le local storage
-		if (
-			firstNameControle() &&
-			lastNameControle() &&
-			addressControle() &&
-			cityControle() &&
-			emailControle()
-		) {
+		{
 			// Envoie de l'objet order au serveur
 			const requestServer = fetch(`${apiUrl}/api/teddies/order`, {
 				method: 'POST',
@@ -152,11 +145,10 @@ function sendOrder() {
 				},
 			});
 
-			// Voir le resultat serveur dans la console
 			requestServer.then(async (response) => {
 				try {
 					const data = await response.json();
-					localStorage.removeItem(basketProducts);
+					localStorage.removeItem(productCartStorage);
 					window.location.href = `./confirmation.html?orderId=${data.orderId}`;
 				} catch (e) {
 					alert('Oups un probleme est survenu');
