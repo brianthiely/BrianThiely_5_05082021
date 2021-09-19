@@ -5,6 +5,8 @@ console.log(productCartStorage);
 
 // Selection de la classe ou le code HTML sera injecter
 const containerPanier = document.querySelector('#containerPanier');
+
+// Création de tableau
 let basketProducts = [];
 let products = [];
 
@@ -55,119 +57,112 @@ containerPanier.insertAdjacentHTML('beforeend', displayTotalPrice);
 // Selection bouton envoie formulaire
 const submitForm = document.querySelector('#formPost');
 
-submitForm.addEventListener('submit', (e) => {
-	e.preventDefault();
-	// Récupération des valeurs du form
-	const formValue = {
-		firstName: document.querySelector('#firstName').value,
-		lastName: document.querySelector('#lastName').value,
-		address: document.querySelector('#address').value,
-		city: document.querySelector('#city').value,
-		email: document.querySelector('#email').value,
-	};
+// Faire une fonction
+function sendOrder() {
+	submitForm.addEventListener('submit', (e) => {
+		e.preventDefault();
+		// Récupération des valeurs du form
+		const formValue = {
+			firstName: document.querySelector('#firstName').value,
+			lastName: document.querySelector('#lastName').value,
+			address: document.querySelector('#address').value,
+			city: document.querySelector('#city').value,
+			email: document.querySelector('#email').value,
+		};
 
-	// --------Validation formulaire
-	function firstNameControle() {
-		const firstName = formValue.firstName;
-		if (/^[A-Za-z]{3,20}$/.test(firstName)) {
-			return true;
-		} else {
-			alert(
-				'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 20 caractères, minimum 3 caractères.'
-			);
-			return false;
+		// --------Validation formulaire
+		function firstNameControle() {
+			const firstName = formValue.firstName;
+			if (/^[A-Za-z]{3,20}$/.test(firstName)) {
+				return true;
+			} else {
+				alert(
+					'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 20 caractères, minimum 3 caractères.'
+				);
+				return false;
+			}
 		}
-	}
 
-	function lastNameControle() {
-		const lastName = formValue.lastName;
-		if (/^[A-Za-z]{3,20}$/.test(lastName)) {
-			return true;
-		} else {
-			alert(
-				'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 20 caractères, minimum 3 caractères.'
-			);
-			return false;
+		function lastNameControle() {
+			const lastName = formValue.lastName;
+			if (/^[A-Za-z]{3,20}$/.test(lastName)) {
+				return true;
+			} else {
+				alert(
+					'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 20 caractères, minimum 3 caractères.'
+				);
+				return false;
+			}
 		}
-	}
 
-	function addressControle() {
-		const address = formValue.address;
-		if (/^[A-Za-z0-100\s]{5,50}$/.test(address)) {
-			return true;
-		} else {
-			alert('Les symboles ne sont pas autorisé.');
-			return false;
+		function addressControle() {
+			const address = formValue.address;
+			if (/^[A-Za-z0-100\s]{5,50}$/.test(address)) {
+				return true;
+			} else {
+				alert('Les symboles ne sont pas autorisé.');
+				return false;
+			}
 		}
-	}
 
-	function cityControle() {
-		const city = formValue.city;
-		if (/^[A-Za-z\s]{3,45}$/.test(city)) {
-			return true;
-		} else {
-			alert(
-				'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 45 caractères, minimum 3 caractères.'
-			);
-			return false;
+		function cityControle() {
+			const city = formValue.city;
+			if (/^[A-Za-z\s]{3,45}$/.test(city)) {
+				return true;
+			} else {
+				alert(
+					'Chiffre et symbole ne sont pas autorisé \n Ne pas dépasser 45 caractères, minimum 3 caractères.'
+				);
+				return false;
+			}
 		}
-	}
 
-	function emailControle() {
-		const email = formValue.email;
-		if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-			return true;
-		} else {
-			alert("L'email n'est pas valide");
-			return false;
+		function emailControle() {
+			const email = formValue.email;
+			if (/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+				return true;
+			} else {
+				alert("L'email n'est pas valide");
+				return false;
+			}
 		}
-	}
 
-	// Données à envoyer vers le serveur
-	const order = {
-		contact: formValue,
-		products: products,
-	};
-	console.log('order');
-	console.log(order);
+		// Données à envoyer vers le serveur
+		const order = {
+			contact: formValue,
+			products: products,
+		};
+		console.log('order');
+		console.log(order);
 
-	// controle validité formulaire avant envoie danz le local storage
-	if (
-		firstNameControle() &&
-		lastNameControle() &&
-		addressControle() &&
-		cityControle() &&
-		emailControle()
-	) {
-		// Mettre l'objet "contact" dans le localStorage
-		localStorage.setItem('contact', JSON.stringify(formValue));
-	} else {
-		alert('Veuillez remplir le formulaire');
-	}
+		// controle validité formulaire avant envoie danz le local storage
+		if (
+			firstNameControle() &&
+			lastNameControle() &&
+			addressControle() &&
+			cityControle() &&
+			emailControle()
+		) {
+			// Envoie de l'objet order au serveur
+			const requestServer = fetch(`${apiUrl}/api/teddies/order`, {
+				method: 'POST',
+				body: JSON.stringify(order),
+				headers: {
+					'Content-Type': 'application/json; charset=utf-8',
+				},
+			});
 
-	// Envoie de l'objet order au serveur
-	const requestServer = fetch(`${apiUrl}/api/teddies/order`, {
-		method: 'POST',
-		body: JSON.stringify(order),
-		headers: {
-			'Content-Type': 'application/json; charset=utf-8',
-		},
-	});
-	console.log('requestServer');
-	console.log(requestServer);
-
-	// Voir le resultat serveur dans la console
-	requestServer.then(async (response) => {
-		try {
-			console.log('response');
-			console.log(response);
-
-			const contenu = await response.json();
-			console.log("contenu");
-			console.log(contenu);
-			window.location.href = `./confirmation.html?orderId=${contenu.orderId}`
-		} catch (e) {
-			console.log(e);
+			// Voir le resultat serveur dans la console
+			requestServer.then(async (response) => {
+				try {
+					const data = await response.json();
+					localStorage.removeItem(basketProducts)
+					window.location.href = `./confirmation.html?orderId=${data.orderId}`;
+				} catch (e) {
+					alert ("Oups un probleme est survenu")
+				}
+			});
 		}
 	});
-});
+}
+sendOrder();
