@@ -115,46 +115,34 @@ function sendOrder() {
 		const contactArray = formAttributesWithValidation.map((item) => {
 			return [item.label, item.value];
 		});
-		console.log(contactArray);
 
 		// Transformer contactArray en Objet "contact"
 		const contact = Object.fromEntries(contactArray);
-		console.log(contact);
-
-		// Mettre l'objet "contact" dans le localStorage
-		localStorage.setItem(
-			'contact',
-			JSON.stringify(Object.fromEntries(contactArray))
-		);
 
 		// Données à envoyer vers le serveur
 		const order = {
 			contact: contact,
 			products: products,
 		};
-		console.log('order');
-		console.log(order);
 
-		{
-			// Envoie de l'objet order au serveur
-			const requestServer = fetch(`${apiUrl}/api/teddies/order`, {
-				method: 'POST',
-				body: JSON.stringify(order),
-				headers: {
-					'Content-Type': 'application/json; charset=utf-8',
-				},
-			});
+		// Envoie de l'objet order au serveur
+		const requestServer = fetch(`${apiUrl}/api/teddies/order`, {
+			method: 'POST',
+			body: JSON.stringify(order),
+			headers: {
+				'Content-Type': 'application/json; charset=utf-8',
+			},
+		});
 
-			requestServer.then(async (response) => {
-				try {
-					const data = await response.json();
-					localStorage.removeItem(productCartStorage);
-					window.location.href = `./confirmation.html?orderId=${data.orderId}`;
-				} catch (e) {
-					alert('Oups un probleme est survenu');
-				}
-			});
-		}
+		requestServer.then(async (response) => {
+			try {
+				const data = await response.json();
+				localStorage.removeItem(productCartStorage);
+				window.location.href = `./confirmation.html?orderId=${data.orderId}`;
+			} catch (e) {
+				alert('Oups un probleme est survenu');
+			}
+		});
 	});
 }
 sendOrder();
