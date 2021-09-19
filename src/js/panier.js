@@ -1,58 +1,58 @@
 // Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
 let productCartStorage = JSON.parse(localStorage.getItem('products'));
-console.log('productCartStorage');
-console.log(productCartStorage);
-
 // Selection de la classe ou le code HTML sera injecter
 const containerPanier = document.querySelector('#containerPanier');
-
-// Création de tableau
+// Création de tableau pour afficher le panier
 let basketProducts = [];
+// Tableau pour stocker l'id des produits à envoyer au serveur
 let products = [];
 
-// Si le panier est vide
-if (productCartStorage === null || productCartStorage == 0) {
-	const emptyBasket = `<div class = "container-emptyBasket font-weight-bold">
-							<div> Le panier est vide </div>
-						</div>`;
-	containerPanier.innerHTML = emptyBasket;
-}
-// Combien d'article dans le local ?
-else {
-	for (i = 0; i < productCartStorage.length; i++) {
-		basketProducts =
-			basketProducts +
-			`
+function hydrateCart(productCartStorage, basketProducts) {
+	/// Action quand le panier est vide
+	if (productCartStorage === null || productCartStorage == 0) {
+		const emptyBasket = `<div class = "container-emptyBasket font-weight-bold">
+	<div> Le panier est vide </div>
+</div>`;
+		containerPanier.innerHTML = emptyBasket;
+	}
+	{
+		// Ajouter au panier les produits enregistrer dans le localStorage
+		for (i = 0; i < productCartStorage.length; i++) {
+			basketProducts =
+				basketProducts +
+				`
 	<div class="recapPanier d-flex justify-content-around mb-4">
 		<div class="w-25 text-left">${productCartStorage[i].name} / ${productCartStorage[i].color}</div>	
 		<div class="">${productCartStorage[i].price}€ </div>
 	</div>
 	`;
-
-		products.push(`${productCartStorage[i].id}`);
-		console.log('arrayproducts');
-		console.log(products);
+			// Ajouter l'ID des produits dans le tableau "Products"
+			products.push(`${productCartStorage[i].id}`);
+		}
 	}
+
+	/// Action quand le panier est plein
 	if (i === productCartStorage.length) {
-		// injection HTML
+		// injection des produits dans le HTML
 		containerPanier.innerHTML = basketProducts;
 	}
+
+	// Tout les prix des produits sont mis dans un tableau pour être calculer avec reducer
+	let getPrice = [];
+	for (let p = 0; p < productCartStorage.length; p++) {
+		productCartStorage[p].price;
+		getPrice.push(productCartStorage[p].price);
+	}
+
+	// additionner tout les prix du tableau
+	const reducer = (accumulator, currentValue) => accumulator + currentValue;
+	const totalPrice = getPrice.reduce(reducer, 0);
+
+	// Afficher prix total dans le HTML
+	const displayTotalPrice = `<div class="font-weight-bold"> Le prix total est de : ${totalPrice}€</div>`;
+	containerPanier.insertAdjacentHTML('beforeend', displayTotalPrice);
 }
-
-// Tout les prix des produits sont mis dans un tableau pour être calculer avec reducer
-let getPrice = [];
-for (let p = 0; p < productCartStorage.length; p++) {
-	productCartStorage[p].price;
-	getPrice.push(productCartStorage[p].price);
-}
-
-// additionner tout les prix du tableau
-const reducer = (accumulator, currentValue) => accumulator + currentValue;
-const totalPrice = getPrice.reduce(reducer, 0);
-
-// Afficher prix total dans le HTML
-const displayTotalPrice = `<div class="font-weight-bold"> Le prix total est de : ${totalPrice}€</div>`;
-containerPanier.insertAdjacentHTML('beforeend', displayTotalPrice);
+hydrateCart(productCartStorage, basketProducts)
 
 // Selection bouton envoie formulaire
 const submitForm = document.querySelector('#formPost');
@@ -156,10 +156,10 @@ function sendOrder() {
 			requestServer.then(async (response) => {
 				try {
 					const data = await response.json();
-					localStorage.removeItem(basketProducts)
+					localStorage.removeItem(basketProducts);
 					window.location.href = `./confirmation.html?orderId=${data.orderId}`;
 				} catch (e) {
-					alert ("Oups un probleme est survenu")
+					alert('Oups un probleme est survenu');
 				}
 			});
 		}
