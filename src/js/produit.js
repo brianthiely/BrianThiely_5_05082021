@@ -23,7 +23,6 @@ async function getProduct(productId) {
 
 // Ajoute le choix du coloris
 function colorOptions(product) {
-	console.log(product);
 	const productColors = product.colors;
 	const productOption = document.getElementById('productOption');
 	productColors.forEach((color) => {
@@ -74,10 +73,8 @@ function onAddtoCart(product) {
 			name: product.name,
 			color: optionChoice,
 			price: product.price / 100,
-			id: product._id
+			id: product._id,
 		};
-		console.log("productCart");
-		console.log(productCart);
 
 		// --------------------localStorage
 

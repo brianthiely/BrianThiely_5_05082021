@@ -13,7 +13,6 @@ function getProducts() {
 			alert('Oups... On dirait que les nounours ce sont fait la malle !');
 		});
 }
-
 // Boucle pour appliquer le template sur chaque produit
 function buildPage(products) {
 	products.forEach((product) => {
