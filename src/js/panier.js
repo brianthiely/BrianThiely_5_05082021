@@ -1,51 +1,44 @@
 // Json.parse convertit les donnée au format json qui sont dans le local en objet javascript
-let productCartStorage = JSON.parse(localStorage.getItem('products'));
+const productCartStorage = JSON.parse(localStorage.getItem('products'));
 // Selection de la classe ou le code HTML sera injecter
-const containerPanier = document.querySelector('#containerPanier');
+let containerPanier = document.querySelector('#containerPanier');
 // Selection bouton envoie formulaire
 const submitForm = document.querySelector('#formPost');
-// Création de tableau pour afficher le panier
-let basketProducts = [];
-// Tableau pour stocker l'id des produits à envoyer au serveur
-let products = [];
+// Si panier vide
+const cartIsEmpty =
+	productCartStorage === null || productCartStorage.length === 0;
 
-hydrateCart(productCartStorage, basketProducts);
-totalPrice(productCartStorage);
-onSubmitOrderForm();
+(async () => {
+	hydrateCart();
+	totalPrice();
+	await onSubmitOrderForm();
+})();
 
 // Fonction qui recupere les produits dans le localStorage pour alimenter la page panier
-function hydrateCart(productCartStorage, basketProducts) {
-	/// Action quand le panier est vide
-	if (productCartStorage === null || productCartStorage == 0) {
-		const emptyBasket = `<div class = "container-emptyBasket font-weight-bold">
-	<div> Le panier est vide </div>
-</div>`;
-		containerPanier.innerHTML = emptyBasket;
-	}
-	{
-		// Ajouter dans le tableau besketProducts les produits enregistrer dans le localStorage
-		for (i = 0; i < productCartStorage.length; i++) {
-			basketProducts =
-				basketProducts +
-				`
-	<div class="recapPanier d-flex justify-content-around mb-4">
-		<div class="w-25 text-left">${productCartStorage[i].name} / ${productCartStorage[i].color}</div>	
-		<div class="">${productCartStorage[i].price}€ </div>
-	</div>
-	`;
-			// Ajouter l'ID des produits dans le tableau "Products"
-			products.push(`${productCartStorage[i].id}`);
-		}
+function hydrateCart() {
+	let htmlValue = '';
+
+	if (cartIsEmpty) {
+		htmlValue = `<div class = "container-emptyBasket font-weight-bold"><div> Le panier est vide </div></div>`;
 	}
 
-	/// Action quand le panier est plein
-	if (i === productCartStorage.length) {
-		// injection du tableau basketProducts dans le HTML
-		containerPanier.innerHTML = basketProducts;
+	if (!cartIsEmpty) {
+		for (i = 0; i < productCartStorage.length; i++) {
+			htmlValue =
+				htmlValue +
+				`
+        <div class="recapPanier d-flex justify-content-around mb-4">
+            <div class="w-25 text-left">${productCartStorage[i].name} / ${productCartStorage[i].color}</div>    
+            <div class="">${productCartStorage[i].price}€ </div>
+        </div>
+        `;
+		}
 	}
+	containerPanier.innerHTML = htmlValue;
 }
+
 // Fonction qui ajoute tout les prix des produits sélectionné dans un tableau et calcul le prix total avec reducer
-function totalPrice(productCartStorage) {
+function totalPrice() {
 	// Tout les prix des produits sont mis dans un tableau pour être calculer avec reducer
 	let getPrice = [];
 	for (let p = 0; p < productCartStorage.length; p++) {
@@ -62,7 +55,7 @@ function totalPrice(productCartStorage) {
 	containerPanier.insertAdjacentHTML('beforeend', displayTotalPrice);
 }
 // Fonction qui vérifie si les données du formulaire sont valide
-function formValidation(e) {
+function formValidationAndSubmitForm(e) {
 	const formAttributesWithValidation = [
 		{
 			label: 'firstName',
@@ -113,50 +106,55 @@ function formValidation(e) {
 		return alert('Veuillez remplir le formulaire');
 	}
 
+	// Creation et envoi de la commande
 	const contactArray = formAttributesWithValidation.map((item) => {
 		return [item.label, item.value];
 	});
 
 	// Transformer contactArray en Objet "contact"
 	const contact = Object.fromEntries(contactArray);
+
+	let products = productCartStorage.map((product) => {
+		return product.id;
+	});
+
 	const order = {
-		contact: contact,
-		products: products,
+		contact,
+		products,
 	};
-	return sendOrder(order);
 	
+	return sendOrder(order);
 }
 // Fonction qui execute la fonction sendOrder si le formulaire est valide
-function onSubmitOrderForm() {
-	submitForm.addEventListener('submit', (e) => {
+async function onSubmitOrderForm() {
+	submitForm.addEventListener('submit', async (e) => {
 		e.preventDefault();
-		const isValidated = formValidation(e);
-
-		// Si validé envoie de l'objet order au serveur
-		if (isValidated) {
-			sendOrder(order);
-		}
+		formValidationAndSubmitForm(e);
 	});
 }
 
 // Fonction qui envoie l'objet order au serveur pour valider la commande
-function sendOrder(order) {
-	// Envoie de l'objet order au serveur
-	const requestServer = fetch(`${apiUrl}/api/teddies/order`, {
-		method: 'POST',
-		body: JSON.stringify(order),
-		headers: {
-			'Content-Type': 'application/json; charset=utf-8',
-		},
-	});
+async function sendOrder(order) {
 
-	requestServer.then(async (response) => {
-		try {
-			const data = await response.json();
-			localStorage.removeItem(productCartStorage);
-			window.location.href = `./confirmation.html?orderId=${data.orderId}`;
-		} catch (e) {
-			alert('Oups un probleme est survenu');
-		}
-	});
+	// Envoie de l'objet order au serveur
+	try {
+		const response = await fetch(`${apiUrl}/api/teddies/order`, {
+			method: 'POST',
+			body: JSON.stringify(order),
+			headers: {
+				'Content-Type': 'application/json; charset=utf-8',
+			},
+		});
+
+		// Recuperation de la reponse du server
+		const data = await response.json();
+
+		// Suppresion du panier du localstorage
+		localStorage.removeItem('products');
+
+		// Redirection vers la page de confirmation de commande
+		return (window.location.href = `./confirmation.html?orderId=${data.orderId}`);
+	} catch (error) {
+		console.log(error);
+	}
 }
